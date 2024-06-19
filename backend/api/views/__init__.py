@@ -1,1 +1,2 @@
 from .category_views import CategoryListCreate, CategoryRetrieveUpdateDestroy
+from .course_views import CourseListCreate, CourseRetrieveUpdateDestroy
