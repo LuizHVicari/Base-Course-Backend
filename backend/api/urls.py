@@ -2,7 +2,9 @@ from django.urls import path, include
 
 from .views import (
   CategoryListCreate, CategoryRetrieveUpdateDestroy, 
-  CourseListCreate, CourseRetrieveUpdateDestroy
+  CourseListCreate, CourseRetrieveUpdateDestroy,
+  LessonListCreate, LessonRetrieveUpdateDestroy,
+  CommentListCreate, CommentRetrieveUpdateDestroy,
   )
 
 
@@ -16,7 +18,19 @@ course_paths = [
   path('<int:pk>/', CourseRetrieveUpdateDestroy.as_view(), name='course')
 ]
 
+lesson_paths = [
+  path('', LessonListCreate.as_view(), name='lessons'),
+  path('<int:pk>', LessonRetrieveUpdateDestroy.as_view(), name='lesson')
+]
+
+comment_paths = [
+  path('', CommentListCreate.as_view(), name='comments'),
+  path('<int:pk>', CommentRetrieveUpdateDestroy.as_view(), name='comment')
+]
+
 urlpatterns = [
-  path('category/', include(category_paths)),
+  path('categories/', include(category_paths)),
   path('courses/', include(course_paths)),
+  path('lessons/', include(lesson_paths)),
+  path('comments/', include(comment_paths)),
 ]

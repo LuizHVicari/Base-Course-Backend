@@ -31,9 +31,10 @@ class TestCommentModel(TestCase):
     self.assertEqual(Comment.objects.count(), 2)
 
   
-  def test_can_create_comment_with_comment(self):
+  def test_can_create_comment_with_parent(self):
     comment = Comment(
       user=self.comment.user,
+      lesson=self.comment.lesson,
       comment_fk=self.comment,
       text='This is a comment',
       stars=5
@@ -48,25 +49,13 @@ class TestCommentModel(TestCase):
     self.assertEqual(Comment.objects.count(), 2)
 
   
-  def test_cant_create_comment_without_parent_or_lesson(self):
+  def test_cant_create_comment_without_lesson(self):
     with self.assertRaises(ValidationError):
       comment = Comment(
         user=self.comment.user,
         text='This is a comment',
-        stars=5
-      )
-      comment.full_clean()
-      comment.save()
-
-
-  def test_cant_create_comment_with_both_parent_and_lesson(self):
-    with self.assertRaises(ValidationError):
-      comment = Comment(
-        user=self.comment.user,
-        lesson=self.comment.lesson,
-        comment_fk=self.comment,
-        text='This is a comment',
-        stars=5
+        stars=5,
+        comment_fk=self.comment
       )
       comment.full_clean()
       comment.save()
@@ -77,7 +66,8 @@ class TestCommentModel(TestCase):
       comment = Comment(
         text='This is a comment',
         stars=5,
-        comment_fk=self.comment
+        comment_fk=self.comment,
+        lesson=self.comment.lesson
       )
       comment.full_clean()
       comment.save()
@@ -87,7 +77,8 @@ class TestCommentModel(TestCase):
     comment = Comment(
       user=self.comment.user,
       stars=5,
-      comment_fk=self.comment
+      comment_fk=self.comment,
+      lesson=self.comment.lesson
     )
     comment.full_clean()
     comment.save()
@@ -104,7 +95,8 @@ class TestCommentModel(TestCase):
         user=self.comment.user,
         text='This is a comment',
         stars=6,
-        comment_fk=self.comment
+        comment_fk=self.comment,
+        lesson=self.comment.lesson
       )
       comment.full_clean()
       comment.save()
@@ -116,7 +108,8 @@ class TestCommentModel(TestCase):
         user=self.comment.user,
         text='This is a comment',
         stars=-1,
-        comment_fk=self.comment
+        comment_fk=self.comment,
+        lesson=self.comment.lesson
       )
       comment.full_clean()
       comment.save()
@@ -126,7 +119,8 @@ class TestCommentModel(TestCase):
     comment = Comment(
       user=self.comment.user,
       text='This is a comment',
-      comment_fk=self.comment
+      comment_fk=self.comment,
+      lesson = self.comment.lesson
     )
     comment.full_clean()
     comment.save()
@@ -135,3 +129,16 @@ class TestCommentModel(TestCase):
     self.assertEqual(comment.text, 'This is a comment')
     self.assertEqual(comment.stars, None)
     self.assertEqual(Comment.objects.count(), 2)
+
+  
+  def test_cannot_create_comment_with_parent_from_different_lesson(self):
+    lesson = LessonFactory()
+    comment = Comment(
+      user=self.comment.user,
+      text='This is a comment',
+      comment_fk=self.comment,
+      lesson=lesson
+    )
+    with self.assertRaises(ValidationError):
+      comment.full_clean()
+      comment.save()
