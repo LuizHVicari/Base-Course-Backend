@@ -24,6 +24,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'django_ckeditor_5',
+    'drf_spectacular',
 
     'course',
     'api',
@@ -31,16 +32,19 @@ INSTALLED_APPS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-        'rest_framework.authentication.SessionAuthentication',) # keeps it for the drf browsable API
-        if DEBUG else
-        ('rest_framework_simplejwt.authentication.JWTAuthentication',),
+      'rest_framework_simplejwt.authentication.JWTAuthentication',),
     'DEFAULT_VERSIONING_CLASS' : (
       'rest_framework.versioning.AcceptHeaderVersioning'
     ),
     'DEFAULT_VERSION' : os.getenv('API_VERSION', 'v1'),
     'ALLOWED_VERSIONS' : os.getenv('ALLOWED_VERSIONS', ['v1']),
 }
+
+if DEBUG:
+  REST_FRAMEWORK['DEFAULT_SCHEMA_CLASS'] = 'drf_spectacular.openapi.AutoSchema'
+  REST_FRAMEWORK['DEFAULT_AUTHENTICATION_CLASSES'] = ( 
+    'rest_framework_simplejwt.authentication.JWTAuthentication',
+    'rest_framework.authentication.SessionAuthentication' ,)
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -109,6 +113,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Base course site API',
+    'DESCRIPTION': 'This project is meant to be an expandable code for course sites',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+}
 
 customColorPalette = [
     {
