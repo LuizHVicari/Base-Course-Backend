@@ -12,6 +12,11 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
+from envparse import env
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,7 +29,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-yv&7!y8i%tmn*h*1oi#urx2ka4t0890a3uaomgczysv41*0wi&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool('DEBUG', default=False)
 
 ALLOWED_HOSTS = []
 
@@ -43,13 +48,22 @@ INSTALLED_APPS = [
     'django_ckeditor_5',
 
     'course',
+    'api',
 ]
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+        'rest_framework.authentication.SessionAuthentication',) # keeps it for the drf browsable API
+        if DEBUG else
+        ('rest_framework_simplejwt.authentication.JWTAuthentication',),
+    'DEFAULT_VERSIONING_CLASS' : (
+      'rest_framework.versioning.AcceptHeaderVersioning'
+    ),
+    'DEFAULT_VERSION' : os.getenv('API_VERSION', 'v1'),
+    'ALLOWED_VERSIONS' : os.getenv('ALLOWED_VERSIONS', ['v1']),
 }
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
