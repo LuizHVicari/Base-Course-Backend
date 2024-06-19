@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 import tempfile
 
 from course.models import Course
-from course.factories import CourseFactory
+from course.factories import CourseFactory, LessonFactory
 
 
 class TestCourseModel(TestCase):
@@ -141,5 +141,15 @@ class TestCourseModel(TestCase):
       course.full_clean()
       course.save()
     self.assertEqual(Course.objects.count(), 1)
+
+  
+  def test_can_delete_course_with_lessons(self):
+    course = CourseFactory()
+    LessonFactory(course=course)
+    self.assertEqual(Course.objects.count(), 2)
+    self.assertEqual(course.lesson_set.count(), 1)
+    course.delete()
+    self.assertEqual(Course.objects.count(), 1)
+
 
   
