@@ -1,8 +1,9 @@
 from django.test import TestCase
-from course.models import Category
-from course.factories import CategoryFactory
-from django.core.exceptions import ValidationError
 from time import sleep
+from django.core.exceptions import ValidationError
+
+from course.models import Category, Course
+from course.factories import CategoryFactory, CourseFactory
 
 
 class CategoryModelTestCase(TestCase):
@@ -87,5 +88,29 @@ class CategoryModelTestCase(TestCase):
 
     self.assertEqual(Category.objects.count(), 1)
     self.assertFalse(Category.objects.filter(name="Test Category").exists())
+
+  
+  def test_cant_create_category_with_same_name(self):
+    with self.assertRaises(ValidationError):
+      category = Category(
+        name=self.category.name,
+        description="Test Description",
+        color="#FFFFFF")
+      category.full_clean()
+      category.save()
+    self.assertEqual(Category.objects.count(), 1)
+
+  
+  def test_can_delete_cateogry_with_courses(self):
+    course = CourseFactory(category=self.category)
+    course.save()
+    self.assertEqual(Category.objects.count(), 1)
+    self.assertEqual(course.category, self.category)
+
+    category_name = self.category.name
+    self.category.delete()
+    self.assertEqual(Category.objects.count(), 0)
+    self.assertFalse(Category.objects.filter(name=category_name).exists())
+    self.assertFalse(Course.objects.filter(category__name=category_name).exists())
 
    

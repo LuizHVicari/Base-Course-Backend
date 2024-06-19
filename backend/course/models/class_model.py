@@ -5,7 +5,7 @@ from .course_model import Course
 
 
 class Class(models.Model):
-	title = models.CharField(max_length=50)
+	title = models.CharField(max_length=50, unique=True)
 	description = models.TextField(blank=True, null=True)
 	course = models.ForeignKey(Course, on_delete=models.CASCADE)
 	cover = models.ImageField(upload_to='classes/', blank=True, null=True)

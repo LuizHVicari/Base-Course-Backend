@@ -4,7 +4,7 @@ from .category_model import Category
 
 
 class Course(models.Model):
-  title = models.CharField(max_length=50)
+  title = models.CharField(max_length=50, unique=True)
   description = models.TextField(blank=True, null=True)
   category = models.ForeignKey(Category, on_delete=models.CASCADE)
   cover = models.ImageField(upload_to='courses/', blank=True, null=True)
