@@ -1,7 +1,8 @@
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
-from django.db.models import Count, QuerySet
+from django.db.models import Count
 from django.shortcuts import get_object_or_404
+from django.http import Http404
 
 from api.utils.pagination.pagination_classes import StandardPagination
 from course.models import Course, Lesson
@@ -49,7 +50,7 @@ class CourseListCreate(ListCreateAPIView):
         min_lesson_query = [item['course'] for item in query if item['c'] >= min_lessons]
         queryset = queryset.filter(pk__in=min_lesson_query)
     
-
+    if not queryset: raise Http404
     return queryset.order_by('updated_at')
   
 
@@ -62,19 +63,18 @@ class CourseRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
     return most_recent_serializer 
   
 
-  def get_queryset(self):    
-    title = self.request.query_params.get('title')
-    if title != None:
-      return Course.objects.get(title=title)
-    return Course.objects.all()
+  # def get_queryset(self):    
+  #   title = self.request.query_params.get('title')
+  #   if title != None:
+  #     return Course.objects.get(title=title)
+  #   return Course.objects.all()
   
   
   def get_object(self):
     title = self.kwargs.get('title')
     if title != None:
       return get_object_or_404(Course, title=title)
-    pk = self.kwargs.get('pk')
-    return get_object_or_404(Course, pk=pk)
+    return get_object_or_404(Course, pk=self.kwargs.get('pk'))
     
   
   

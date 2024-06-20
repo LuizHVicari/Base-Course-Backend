@@ -29,7 +29,12 @@ course_paths = [
 
 lesson_paths = [
   path('', LessonListCreate.as_view(), name='lessons'),
+  re_path(
+    '^(?P<course>.+)/^(?P<title>.+)/^(?P<author>.+)$', 
+    LessonListCreate.as_view(), 
+    name='lessons'),
   path('only/<int:pk>', LessonRetrieveUpdateDestroy.as_view(), name='lesson'),
+  path('only/<str:title>', LessonRetrieveUpdateDestroy.as_view(), name='lesson'),
 ]
 
 comment_paths = [

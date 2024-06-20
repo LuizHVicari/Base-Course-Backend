@@ -4,10 +4,11 @@ from django.contrib.auth.models import User
 from django_ckeditor_5.fields import CKEditor5Field
 
 from .course_model import Course
+from .utils.validators.field_not_numeric_validator import validate_not_numeric
 
 
 class Lesson(models.Model):
-	title = models.CharField(max_length=50, unique=True)
+	title = models.CharField(max_length=50, unique=True, validators=[validate_not_numeric, ])
 	description = models.TextField(blank=True, null=True)
 	course = models.ForeignKey(Course, on_delete=models.CASCADE)
 	cover = models.ImageField(upload_to='classes/', blank=True, null=True)

@@ -1,8 +1,10 @@
 from django.db import models
 
+from .utils.validators import validate_not_numeric
+
 
 class Category(models.Model):
-  name = models.CharField(max_length=50, unique=True)
+  name = models.CharField(max_length=50, unique=True, validators=[validate_not_numeric, ])
   description = models.TextField(blank=True, null=True)
   color = models.CharField(max_length=7, default="#000000")
 
@@ -12,3 +14,4 @@ class Category(models.Model):
 
   def __str__(self) -> str:
     return self.name
+  
