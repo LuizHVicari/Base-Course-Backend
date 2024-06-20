@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.exceptions import ValidationError
+from django.contrib.auth.models import User
 from django_ckeditor_5.fields import CKEditor5Field
 
 from .course_model import Course
@@ -12,6 +13,7 @@ class Lesson(models.Model):
 	cover = models.ImageField(upload_to='classes/', blank=True, null=True)
 	video = models.FileField(upload_to='classes/', blank=True, null=True)
 	text = CKEditor5Field(blank=True, null=True)
+	author = models.ForeignKey(User, on_delete=models.CASCADE)
 
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
