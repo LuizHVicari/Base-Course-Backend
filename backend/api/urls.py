@@ -30,26 +30,27 @@ course_paths = [
 lesson_paths = [
   path('', LessonListCreate.as_view(), name='lessons'),
   re_path(
-    '^(?P<course>.+)/^(?P<title>.+)/^(?P<author>.+)$', 
+    '^(?P<course>.+)/^(?P<title>.+)/^(?P<author>.+)/$', 
     LessonListCreate.as_view(), 
     name='lessons'),
-  path('only/<int:pk>', LessonRetrieveUpdateDestroy.as_view(), name='lesson'),
-  path('only/<str:title>', LessonRetrieveUpdateDestroy.as_view(), name='lesson'),
+  path('only/<int:pk>/', LessonRetrieveUpdateDestroy.as_view(), name='lesson'),
+  path('only/<str:title>/', LessonRetrieveUpdateDestroy.as_view(), name='lesson'),
 ]
 
 comment_paths = [
   path('', CommentListCreate.as_view(), name='comments'),
-  path('only/<int:pk>', CommentRetrieveUpdateDestroy.as_view(), name='comment'),
+  re_path('^(?P<user>.+)/^(?P<lesson>.+)/^(?P<stars>[0-9]+)/$', CommentListCreate.as_view(), name='comments'),
+  path('only/<int:pk>/', CommentRetrieveUpdateDestroy.as_view(), name='comment'),
 ]
 
 save_paths = [
   path('', SaveListCreate.as_view(), name='saves'),
-  path('only/<int:pk>', SaveRetrieveUpdateDestroy.as_view(), name='save'),
+  path('only/<int:pk>/', SaveRetrieveUpdateDestroy.as_view(), name='save'),
 ]
 
 watched_paths = [
   path('', WatchedListCreate.as_view(), name='watcheds'),
-  path('only/<int:pk>', WatchedRetrieveUpdateDestroy.as_view(), name='watched'),
+  path('only/<int:pk>/', WatchedRetrieveUpdateDestroy.as_view(), name='watched'),
 ]
 
 urlpatterns = [
