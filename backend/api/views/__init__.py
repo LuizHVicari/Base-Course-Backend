@@ -3,3 +3,4 @@ from .course_views import CourseListCreate, CourseRetrieveUpdateDestroy
 from .lesson_views import LessonListCreate, LessonRetrieveUpdateDestroy
 from .comment_views import CommentListCreate, CommentRetrieveUpdateDestroy
 from .save_views import SaveListCreate, SaveRetrieveUpdateDestroy
+from .watched_views import WatchedListCreate, WatchedRetrieveUpdateDestroy

@@ -5,7 +5,8 @@ from .views import (
   CourseListCreate, CourseRetrieveUpdateDestroy,
   LessonListCreate, LessonRetrieveUpdateDestroy,
   CommentListCreate, CommentRetrieveUpdateDestroy,
-  SaveListCreate, SaveRetrieveUpdateDestroy
+  SaveListCreate, SaveRetrieveUpdateDestroy,
+  WatchedListCreate, WatchedRetrieveUpdateDestroy
   )
 
 
@@ -34,10 +35,16 @@ save_paths = [
   path('<int:pk>', SaveRetrieveUpdateDestroy.as_view(), name='save')
 ]
 
+watched_paths = [
+  path('', WatchedListCreate.as_view(), name='watcheds'),
+  path('<int:pk>', WatchedRetrieveUpdateDestroy.as_view(), name='watched')
+]
+
 urlpatterns = [
   path('categories/', include(category_paths)),
   path('courses/', include(course_paths)),
   path('lessons/', include(lesson_paths)),
   path('comments/', include(comment_paths)),
   path('saves/', include(save_paths)),
+  path('watcheds/', include(watched_paths))
 ]

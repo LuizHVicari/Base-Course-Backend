@@ -3,5 +3,6 @@ from .v1 import (
   CourseSerializerV1, 
   LessonSerializerV1, 
   CommentSerializerV1,
-  SaveSerializerV1
+  SaveSerializerV1,
+  WatchedSerializerV1
   )
