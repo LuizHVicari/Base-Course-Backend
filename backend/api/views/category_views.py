@@ -27,8 +27,9 @@ class CategoryListCreate(ListCreateAPIView):
     name = self.kwargs.get('name')
     if name != None:
       queryset = queryset.filter(name__icontains=name)
+
     if not queryset: raise Http404
-    return queryset.order_by('updated_at')
+    return queryset.order_by('-updated_at')
   
 
 class CategoryRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):

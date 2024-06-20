@@ -50,6 +50,7 @@ save_paths = [
 
 watched_paths = [
   path('', WatchedListCreate.as_view(), name='watcheds'),
+  re_path('^(?P<lesson>.+)/$', WatchedListCreate.as_view(), name='watcheds'),
   path('only/<int:pk>/', WatchedRetrieveUpdateDestroy.as_view(), name='watched'),
 ]
 

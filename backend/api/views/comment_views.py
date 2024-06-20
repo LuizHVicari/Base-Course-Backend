@@ -39,7 +39,7 @@ class CommentListCreate(ListCreateAPIView):
       queryset = queryset.filter(stars=int(stars))
 
     if not queryset: raise Http404
-    return queryset
+    return queryset.order_by('-updated_at')
     
 
 class CommentRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):

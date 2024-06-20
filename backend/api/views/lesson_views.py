@@ -34,6 +34,7 @@ class LessonListCreate(ListCreateAPIView):
       queryset = queryset.filter(title__icontains=title)
     if author != None:
       queryset = queryset.filter(author__username__icontains=author)
+      
     if not queryset: raise Http404
     return queryset.order_by('-updated_at')
   

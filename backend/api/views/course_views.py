@@ -51,7 +51,7 @@ class CourseListCreate(ListCreateAPIView):
         queryset = queryset.filter(pk__in=min_lesson_query)
     
     if not queryset: raise Http404
-    return queryset.order_by('updated_at')
+    return queryset.order_by('-updated_at')
   
 
 class CourseRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
@@ -61,13 +61,6 @@ class CourseRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
     if self.request.version == 'v1':
       return CourseSerializerV1
     return most_recent_serializer 
-  
-
-  # def get_queryset(self):    
-  #   title = self.request.query_params.get('title')
-  #   if title != None:
-  #     return Course.objects.get(title=title)
-  #   return Course.objects.all()
   
   
   def get_object(self):
