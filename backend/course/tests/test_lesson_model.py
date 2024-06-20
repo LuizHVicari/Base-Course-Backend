@@ -21,7 +21,8 @@ class TestLessonModel(TestCase):
       course=self.lesson.course,
       cover=self.lesson.cover,
       video=self.lesson.video,
-      text=self.lesson.text
+      text=self.lesson.text,
+      author=self.lesson.author,
     )
     lesson.full_clean()
     lesson.save()
@@ -74,7 +75,8 @@ class TestLessonModel(TestCase):
         course=self.lesson.course,
         cover=self.lesson.cover,
         video=self.lesson.video,
-        text=self.lesson.text
+        text=self.lesson.text,
+        author=self.lesson.author,
       )
       lesson.full_clean()
       lesson.save()
@@ -87,7 +89,8 @@ class TestLessonModel(TestCase):
       course=self.lesson.course,
       cover=self.lesson.cover,
       video=self.lesson.video,
-      text=self.lesson.text
+      text=self.lesson.text,
+      author=self.lesson.author,
     )
     lesson.full_clean()
     lesson.save()
@@ -108,7 +111,8 @@ class TestLessonModel(TestCase):
         description='description',
         cover=self.lesson.cover,
         video=self.lesson.video,
-        text=self.lesson.text
+        text=self.lesson.text,
+        author=self.lesson.author,
       )
       lesson.full_clean()
       lesson.save()
@@ -121,7 +125,8 @@ class TestLessonModel(TestCase):
       description='description',
       course=self.lesson.course,
       video=self.lesson.video,
-      text=self.lesson.text
+      text=self.lesson.text,
+      author=self.lesson.author
     )
     lesson.full_clean()
     lesson.save()
@@ -141,7 +146,8 @@ class TestLessonModel(TestCase):
       description='description',
       course=self.lesson.course,
       cover=self.lesson.cover,
-      text=self.lesson.text
+      text=self.lesson.text,
+      author=self.lesson.author,
     )
     lesson.full_clean()
     lesson.save()
@@ -161,7 +167,8 @@ class TestLessonModel(TestCase):
       description='description',
       course=self.lesson.course,
       cover=self.lesson.cover,
-      video=self.lesson.video
+      video=self.lesson.video,
+      author=self.lesson.author,
     )
     lesson.full_clean()
     lesson.save()
@@ -183,7 +190,8 @@ class TestLessonModel(TestCase):
         course=self.lesson.course,
         cover=self.lesson.cover,
         video=self.lesson.video,
-        text=self.lesson.text
+        text=self.lesson.text,
+        author=self.lesson.author,
       )
       lesson.full_clean()
       lesson.save()
@@ -196,7 +204,8 @@ class TestLessonModel(TestCase):
         title='lesson',
         description='description',
         course=self.lesson.course,
-        cover=self.lesson.cover
+        cover=self.lesson.cover,
+        author=self.lesson.author,
       )
       lesson.full_clean()
       lesson.save()
@@ -228,3 +237,18 @@ class TestLessonModel(TestCase):
     self.lesson.delete()
 
     self.assertEqual(Lesson.objects.count(), 0)
+
+  
+  def test_cant_create_lesson_with_no_author(self):
+    with self.assertRaises(ValidationError):
+      lesson = Lesson(
+        title='lesson',
+        description='description',
+        course=self.lesson.course,
+        cover=self.lesson.cover,
+        video=self.lesson.video,
+        text=self.lesson.text
+      )
+      lesson.full_clean()
+      lesson.save()
+    self.assertEqual(Lesson.objects.count(), 1)
