@@ -1,5 +1,5 @@
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated
 from django.http import Http404
 
 from api.serializers import WatchedSerializerV1
@@ -11,7 +11,7 @@ most_recent_serializer = WatchedSerializerV1
 
 
 class WatchedListCreate(ListCreateAPIView):
-  permission_classes = [IsAuthenticatedOrReadOnly, ]
+  permission_classes = [IsAuthenticated, ]
   pagination_class = StandardPagination
 
   def get_serializer_class(self):
@@ -32,7 +32,7 @@ class WatchedListCreate(ListCreateAPIView):
 
 class WatchedRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
   queryset = Watched.objects.all()
-  permission_classes = [IsAuthenticatedOrReadOnly, ]
+  permission_classes = [IsAuthenticated, ]
 
   def get_serializer_class(self):
     if self.request.version == 'v1':
