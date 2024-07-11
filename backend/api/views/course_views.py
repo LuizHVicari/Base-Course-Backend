@@ -37,18 +37,17 @@ class CourseListCreate(ListCreateAPIView):
     if category != None:
       queryset = queryset.filter(category__name__icontains=category)
 
-    if max_lessons != None or min_lessons != None:
-      query = list(Lesson.objects.values('course').annotate(c=Count('course')).order_by('-c'))
+    if max_lessons != None:
+      max_lessons = int(max_lessons)
+      queryset = queryset.annotate(
+        lesson_count=Count('lesson')).filter(
+          lesson_count__lte=max_lessons)
 
-      if max_lessons != None:
-        max_lessons = int(max_lessons)
-        max_lesson_query = [item['course'] for item in query if item['c'] <= max_lessons]
-        queryset = queryset.filter(pk__in=max_lesson_query)
-
-      if min_lessons != None and min_lessons != '0':
-        min_lessons = int(min_lessons)
-        min_lesson_query = [item['course'] for item in query if item['c'] >= min_lessons]
-        queryset = queryset.filter(pk__in=min_lesson_query)
+    if min_lessons != None:
+      min_lessons = int(min_lessons)
+      queryset = queryset.annotate(
+        lesson_count=Count('lesson')).filter(
+          lesson_count__gte=min_lessons)
     
     if not queryset: raise Http404
     return queryset.order_by('-updated_at')

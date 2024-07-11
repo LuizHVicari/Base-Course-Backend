@@ -10,7 +10,7 @@ class LessonFactory(factory.django.DjangoModelFactory):
   class Meta:
     model = Lesson
 
-  title = factory.LazyAttribute(lambda _: faker.sentence())
+  title = factory.LazyAttribute(lambda _: faker.unique.sentence())
   description = factory.LazyAttribute(lambda _: faker.text())
   course = factory.SubFactory(CourseFactory)
   cover = factory.django.ImageField(color=faker.hex_color())
