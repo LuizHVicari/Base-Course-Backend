@@ -10,6 +10,7 @@ from backend.faker_base import faker
 
 class TestAnonUserComments(APITestCase):
   def setUp(self):
+    faker.unique.clear()
     self.comments_1 = CommentFactory()
     self.comments_2 = CommentFactory()
     for _ in range(10):

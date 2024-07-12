@@ -1,4 +1,4 @@
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveDestroyAPIView
 from rest_framework.permissions import IsAuthenticated
 
 from api.serializers import SaveSerializerV1
@@ -26,7 +26,7 @@ class SaveListCreate(ListCreateAPIView):
       queryset = Save.objects.all()
     else:
       queryset = Save.objects.filter(user=self.request.user)
-    return queryset
+    return queryset.order_by('-updated_at')
   
 
   def get_serializer_context(self):
@@ -35,7 +35,7 @@ class SaveListCreate(ListCreateAPIView):
     return context
   
 
-class SaveRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
+class SaveRetrieveDestroy(RetrieveDestroyAPIView):
   permission_classes = [IsAuthenticated, IsStaffOrOwner,]
 
   def get_serializer_class(self):

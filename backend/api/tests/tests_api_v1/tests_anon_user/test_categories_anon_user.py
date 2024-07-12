@@ -10,6 +10,7 @@ from backend.faker_base import faker
 
 class TestAnonUserCategories(APITestCase):
   def setUp(self):
+    faker.unique.clear()
     self.category_1 = CategoryFactory()
     self.category_2 = CategoryFactory()
     for _ in range(10):

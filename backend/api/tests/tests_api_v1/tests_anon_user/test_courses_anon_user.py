@@ -4,13 +4,14 @@ from django.urls import reverse
 from django.db.models import Count
 
 from course.factories import CourseFactory, LessonFactory
-from course.models import Course, Lesson
+from course.models import Course
 from api.serializers import CourseSerializerV1
 from backend.faker_base import faker
 
 
 class TestAnonUserCategories(APITestCase):
   def setUp(self):
+    faker.unique.clear()
     self.course_1 = CourseFactory()
     self.course_2 = CourseFactory()
     for _ in range(10):

@@ -10,6 +10,7 @@ from backend.faker_base import faker
 
 class TestAnonUserLessons(APITestCase):
   def setUp(self):
+    faker.unique.clear()
     self.lesson_1 = LessonFactory()
     self.lesson_2 = LessonFactory()
     for _ in range(10):

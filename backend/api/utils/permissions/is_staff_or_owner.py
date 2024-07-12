@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from rest_framework import permissions
+from rest_framework import permissions, status
 
 
 class IsStaffOrOwner(permissions.BasePermission):
@@ -10,7 +10,7 @@ class IsStaffOrOwner(permissions.BasePermission):
   """
   message = 'only staff users or the user that data is related have access to this data'
 
-  def has_permission(self, request, view, obj):
+  def has_object_permission(self, request, view, obj):
     if request.user.is_superuser or request.user.is_staff:
       return True
     if obj.user == request.user:

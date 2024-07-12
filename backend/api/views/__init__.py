@@ -2,5 +2,5 @@ from .category_views import CategoryListCreate, CategoryRetrieveUpdateDestroy
 from .course_views import CourseListCreate, CourseRetrieveUpdateDestroy
 from .lesson_views import LessonListCreate, LessonRetrieveUpdateDestroy
 from .comment_views import CommentListCreate, CommentRetrieveUpdateDestroy
-from .save_views import SaveListCreate, SaveRetrieveUpdateDestroy
+from .save_views import SaveListCreate, SaveRetrieveDestroy
 from .watched_views import WatchedListCreate, WatchedRetrieveUpdateDestroy

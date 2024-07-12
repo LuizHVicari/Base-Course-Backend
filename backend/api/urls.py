@@ -5,7 +5,7 @@ from .views import (
   CourseListCreate, CourseRetrieveUpdateDestroy,
   LessonListCreate, LessonRetrieveUpdateDestroy,
   CommentListCreate, CommentRetrieveUpdateDestroy,
-  SaveListCreate, SaveRetrieveUpdateDestroy,
+  SaveListCreate, SaveRetrieveDestroy,
   WatchedListCreate, WatchedRetrieveUpdateDestroy
   )
 
@@ -45,7 +45,7 @@ comment_paths = [
 
 save_paths = [
   path('', SaveListCreate.as_view(), name='saves'),
-  path('only/<int:pk>/', SaveRetrieveUpdateDestroy.as_view(), name='save'),
+  path('only/<int:pk>/', SaveRetrieveDestroy.as_view(), name='save'),
 ]
 
 watched_paths = [
