@@ -6,13 +6,14 @@ from django.http import Http404
 from api.serializers import CategorySerializerV1
 from course.models import Category
 from api.utils.pagination.pagination_classes import StandardPagination
+from api.utils.permissions import IsStaffOrReadOnly
 
 
 most_recent_serializer = CategorySerializerV1
 
 
 class CategoryListCreate(ListCreateAPIView):
-  permission_classes = [IsAuthenticatedOrReadOnly, ]
+  permission_classes = [IsAuthenticatedOrReadOnly, IsStaffOrReadOnly, ]
   pagination_class = StandardPagination
 
   def get_serializer_class(self):
@@ -33,7 +34,7 @@ class CategoryListCreate(ListCreateAPIView):
   
 
 class CategoryRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
-  permission_classes = [IsAuthenticatedOrReadOnly, ]
+  permission_classes = [IsAuthenticatedOrReadOnly, IsStaffOrReadOnly, ]
 
   def get_serializer_class(self):
     if self.request.version == 'v1':

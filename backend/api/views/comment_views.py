@@ -6,6 +6,7 @@ from django.http import Http404
 from api.serializers import CommentSerializerV1
 from course.models import Comment
 from api.utils.pagination.pagination_classes import StandardPagination
+from api.utils.permissions import IsStaffOrOwnerOrReadOnly
 
 
 most_recent_serializer = CommentSerializerV1
@@ -20,6 +21,12 @@ class CommentListCreate(ListCreateAPIView):
       return CommentSerializerV1
 
     return most_recent_serializer
+  
+  
+  def get_serializer_context(self):
+    context = super().get_serializer_context()
+    context['request'] = self.request
+    return context
   
 
   def get_queryset(self):
@@ -44,7 +51,8 @@ class CommentListCreate(ListCreateAPIView):
 
 class CommentRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
   queryset = Comment.objects.all()
-  permission_classes = [IsAuthenticatedOrReadOnly, ]
+  permission_classes = [IsAuthenticatedOrReadOnly, IsStaffOrOwnerOrReadOnly,]
+  
 
   def get_serializer_class(self):
     if self.request.version == 'v1':

@@ -5,15 +5,16 @@ from django.shortcuts import get_object_or_404
 from django.http import Http404
 
 from api.utils.pagination.pagination_classes import StandardPagination
-from course.models import Course, Lesson
+from course.models import Course
 from api.serializers import CourseSerializerV1
+from api.utils.permissions import IsStaffOrReadOnly
 
 
 most_recent_serializer = CourseSerializerV1
 
 
 class CourseListCreate(ListCreateAPIView):
-  permission_classes = [IsAuthenticatedOrReadOnly, ]
+  permission_classes = [IsAuthenticatedOrReadOnly, IsStaffOrReadOnly, ]
   pagination_class = StandardPagination
 
 
@@ -54,7 +55,7 @@ class CourseListCreate(ListCreateAPIView):
   
 
 class CourseRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
-  permission_classes = [IsAuthenticatedOrReadOnly, ]
+  permission_classes = [IsAuthenticatedOrReadOnly, IsStaffOrReadOnly, ]
 
   def get_serializer_class(self):
     if self.request.version == 'v1':
