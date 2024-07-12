@@ -8,7 +8,7 @@ from api.serializers import WatchedSerializerV1
 from backend.faker_base import faker
 
 
-class TestAuthUserComments(APITestCase):
+class TestAuthUserWatcheds(APITestCase):
   def setUp(self):
     faker.unique.clear()
     self.watched_1 = WatchedFactory()
@@ -20,6 +20,7 @@ class TestAuthUserComments(APITestCase):
     self.watched_3 = WatchedFactory(user=self.user)
 
     self.client = APIClient()
+    self.client.force_authenticate(user=self.user)
     self.client.credentials(HTTP_ACCEPT='application/json; version=v1')
 
   
@@ -34,7 +35,7 @@ class TestAuthUserComments(APITestCase):
   
   def test_auth_user_can_retrieve_his_watcheds(self):
     response = self.client.get(path=reverse('watched', args=[self.watched_3.id]))
-    watched = Watched.objects.get(pk=response.data.get('id'))
+    watched = Watched.objects.get(pk=self.watched_3.id)
     serializer = WatchedSerializerV1(watched)
     
     self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -50,8 +51,8 @@ class TestAuthUserComments(APITestCase):
     response = self.client.put(
       path=reverse('watched', args=[self.watched_3.id]),
       data={
-        'user': self.watched_3.user.username,
-        'lesson': self.watched_3.lesson.title
+        'lesson': self.watched_3.lesson.id,
+        'watched_time': 100
       })
     self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -60,8 +61,7 @@ class TestAuthUserComments(APITestCase):
     response = self.client.put(
       path=reverse('watched', args=[self.watched_1.id]),
       data={
-        'user': self.watched_1.user.username,
-        'lesson': self.watched_1.lesson.title
+        'lesson': self.watched_1.lesson.id
       })
     self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
@@ -70,8 +70,7 @@ class TestAuthUserComments(APITestCase):
     response = self.client.patch(
       path=reverse('watched', args=[self.watched_3.id]),
       data={
-        'user': self.watched_3.user.username,
-        'lesson': self.watched_3.lesson.title
+        'lesson': self.watched_3.lesson.id
       })
     self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -81,7 +80,7 @@ class TestAuthUserComments(APITestCase):
       path=reverse('watched', args=[self.watched_1.id]),
       data={
         'user': self.watched_1.user.username,
-        'lesson': self.watched_1.lesson.title
+        'lesson': self.watched_1.lesson.id
       })
     self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 

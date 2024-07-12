@@ -30,9 +30,6 @@ class WatchedListCreate(ListCreateAPIView):
   
   def get_queryset(self):
     queryset = Watched.objects.all()
-    lesson : str | None = self.request.query_params.get('lesson')
-    if lesson != None:
-      queryset = queryset.filter(lesson__title__icontains=lesson)
     if not self.request.user.is_staff:
       queryset = queryset.filter(user=self.request.user)
     
@@ -41,7 +38,6 @@ class WatchedListCreate(ListCreateAPIView):
   
 
 class WatchedRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
-  queryset = Watched.objects.all()
   permission_classes = [IsAuthenticated, IsStaffOrOwner, ]
 
   def get_serializer_class(self):

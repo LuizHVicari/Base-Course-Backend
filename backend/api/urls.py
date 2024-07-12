@@ -50,7 +50,6 @@ save_paths = [
 
 watched_paths = [
   path('', WatchedListCreate.as_view(), name='watcheds'),
-  re_path('^(?P<lesson>.+)/$', WatchedListCreate.as_view(), name='watcheds'), # TODO maybe this have no sense since a user cannot watch a lesson more than one time
   path('only/<int:pk>/', WatchedRetrieveUpdateDestroy.as_view(), name='watched'),
 ]
 
