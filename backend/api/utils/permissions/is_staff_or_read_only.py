@@ -8,7 +8,7 @@ class IsStaffOrReadOnly(permissions.BasePermission):
   """
   message = 'only staff users can modify or create this data'
 
-  def has_permission(self, request, view, obj):
+  def has_permission(self, request, view,):
     if request.user.is_superuser or request.user.is_staff:
       return True
     if request.method in permissions.SAFE_METHODS:
