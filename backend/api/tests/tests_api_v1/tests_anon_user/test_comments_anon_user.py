@@ -16,6 +16,7 @@ class TestAnonUserComments(APITestCase):
       CommentFactory()
 
     self.client = APIClient()
+    self.client.credentials(HTTP_ACCEPT='application/json; version=v1')
 
   
   def test_anon_user_can_list_all_comments(self):

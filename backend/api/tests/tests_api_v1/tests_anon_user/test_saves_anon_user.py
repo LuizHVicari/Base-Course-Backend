@@ -16,6 +16,8 @@ class TestAnonUserComments(APITestCase):
       SaveFactory()
 
     self.client = APIClient()
+    self.client.credentials(HTTP_ACCEPT='application/json; version=v1')
+
 
   def test_anon_user_cannot_list_saves(self):
     response = self.client.get(path=reverse('saves'))

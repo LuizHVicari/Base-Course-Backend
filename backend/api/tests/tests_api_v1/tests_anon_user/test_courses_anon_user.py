@@ -22,6 +22,8 @@ class TestAnonUserCategories(APITestCase):
       LessonFactory(course=self.course_2)
 
     self.client = APIClient()
+    self.client.credentials(HTTP_ACCEPT='application/json; version=v1')
+    
 
   def compare_results(self, response, serializer):
     results = response.data.get('results')
